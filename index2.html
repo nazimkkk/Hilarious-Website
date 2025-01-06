@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Hilarious Website!</h1>
+    </header>
+    <main>
+        <h2>Extremely Funny Jokes</h2>
+        <div id="jokes-container"></div>
+        <h2>If you don't like these jokes (impossible), I bet you'll like the next ones!</h2>
+        <button onclick="fetchJokes()">Get 10 New Jokes</button>
+        //salam mane olma
+
+        <script>
+            function fetchJokes() {
+                const jokesContainer = document.getElementById("jokes-container");
+                jokesContainer.innerHTML = "Loading jokes...";
+
+                Promise.all(
+                    Array.from({ length: 10 }, () => 
+                        fetch("https://official-joke-api.appspot.com/random_joke")
+                            .then(response => response.json())
+                    )
+                ).then(jokes => {
+                    jokesContainer.innerHTML = jokes.map(joke => 
+                        `
+                        <div class="joke-card">
+                            <h3>${joke.setup}</h3>
+                            <p>${joke.punchline}</p>
+                        </div>
+                        `
+                    ).join('');
+                }).catch(error => {
+                    console.error('Error fetching jokes:', error);
+                    jokesContainer.textContent = "Failed to load jokes.";
+                });
+            }
+
+            window.onload = fetchJokes;
+        </script>
+    </main>
+</body>
+</html>
