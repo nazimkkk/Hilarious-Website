@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Vulnerable Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Contact Us</h1>
+        <nav>
+            <a href="/">Home</a> | <a href="/about.html">About</a> | <a href="/contact.html">Contact</a> | <a href="/login.html">Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>We'd Love to Hear from You!</h2>
+        
+        <!-- Vulnerable Contact Form -->
+        <form id="contact-form">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required placeholder="Your full name"><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required placeholder="Your email address"><br><br>
+
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="4" required placeholder="Write your message here"></textarea><br><br>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Display Submitted Data (Vulnerable to XSS) -->
+        <div id="submitted-message">
+            <h3>Thank you for your message, <span id="user-name"></span>!</h3>
+            <p>Your email: <span id="user-email"></span></p>
+            <p>Your message: <span id="user-message"></span></p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Vulnerable Website</p>
+    </footer>
+
+    <script>
+        // Vulnerable script: it directly injects user input without sanitization (XSS vulnerability)
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            // Retrieve values from the form fields
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Inject user input into the page without sanitization (Vulnerable to XSS)
+            document.getElementById('user-name').innerHTML = name;
+            document.getElementById('user-email').innerHTML = email;
+            document.getElementById('user-message').innerHTML = message;
+        });
+    </script>
+</body>
+</html>
