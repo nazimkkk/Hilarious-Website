@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - My Hilarious Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+        <nav>
+            <a href="/">Home</a> | <a href="/about.html">About</a> | <a href="/contact.html">Contact</a> | <a href="/login.html">Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Welcome Back!</h2>
+        <form id="login-form">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required placeholder="Enter your username"><br><br>
+
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required placeholder="Enter your password"><br><br>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Don't have an account? <a href="/register.html">Sign up here</a>.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Hilarious Website</p>
+    </footer>
+
+    <script>
+        // Handling form submission
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Send data to backend (API)
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Login successful!');
+                    // Redirect to home or user dashboard
+                    window.location.href = '/';  // You can change this to a different page
+                } else {
+                    alert('Invalid credentials.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        });
+    </script>
+</body>
+</html>
